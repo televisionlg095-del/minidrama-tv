@@ -37,5 +37,5 @@ jobs:
           name: MiniDramaTV-IPK
           path: dist/*.ipk
           if-no-files-found: error
-          retentio
-          n-days: 7
+          
+          retention-days: 7

@@ -1,0 +1,41 @@
+
+name: Build MiniDrama TV IPK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install webOS CLI
+        run: npm install --global @webos-tools/cli
+
+      - name: Check metadata
+        run: ares-package --check .
+
+      - name: Build IPK
+        run: |
+          mkdir -p dist
+          ares-package --no-minify -o dist .
+          ls -lah dist
+
+      - name: Upload IPK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiniDramaTV-IPK
+          path: dist/*.ipk
+          if-no-files-found: error
+          retentio
+          n-days: 7

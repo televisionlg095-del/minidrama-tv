@@ -42,11 +42,81 @@ iframe{width:100%;height:100%;border:0;background:#fff}
 </div>
 </main>
 <script>
-const frame=document.getElementById('site'),status=document.getElementById('status');
-document.getElementById('open').onclick=()=>{window.location.href='https://www.dramabox.com/es'};
-document.getElementById('fallback').onclick=(e)=>{e.preventDefault();window.location.href='https://www.dramabox.com/es'};
-document.getElementById('reload').onclick=()=>{status.textContent='Volviendo a cargar…';frame.src='https://www.dramabox.com/es'};
-frame.addEventListener('load',()=>{status.textContent='El marco terminó de cargar. Comprueba visualmente si aparece el catálogo; un evento load no garantiza que el sitio permita mostrarse dentro del marco.'});
+const frame = document.getElementById('site');
+const status = document.getElementById('status');
+const openButton = document.getElementById('open');
+const reloadButton = document.getElementById('reload');
+const fallback = document.getElementById('fallback');
+
+frame.setAttribute('tabindex', '0');
+
+const controls = [
+  openButton,
+  reloadButton,
+  fallback,
+  frame
+];
+
+let current = 0;
+
+function focusControl(index) {
+  current = (index + controls.length) % controls.length;
+  controls[current].focus();
+}
+
+window.addEventListener('keydown', function (event) {
+  const key = event.key;
+
+  if (!['ArrowUp', 'ArrowDown', 'ArrowLeft',
+        'ArrowRight', 'Enter'].includes(key)) {
+    return;
+  }
+
+  if (document.activeElement === frame) {
+    return;
+  }
+
+  if (key === 'Enter') {
+    const active = document.activeElement;
+
+    if (active && controls.includes(active)) {
+      event.preventDefault();
+      active.click();
+    }
+    return;
+  }
+
+  event.preventDefault();
+
+  if (key === 'ArrowRight' || key === 'ArrowDown') {
+    focusControl(current + 1);
+  } else {
+    focusControl(current - 1);
+  }
+});
+
+controls.forEach(function (control, index) {
+  control.addEventListener('focus', function () {
+    current = index;
+  });
+});
+
+openButton.onclick = function () {
+  window.location.href = 'https://www.dramabox.com/es';
+};
+
+fallback.onclick = function (event) {
+  event.preventDefault();
+  window.location.href = 'https://www.dramabox.com/es';
+};
+
+reloadButton.onclick = function () {
+  status.textContent = 'Cargando DramaBox...';
+  frame.src = 'https://www.dramabox.com/es';
+};
+
+frame.addEventListener('load', function () {
+  status.textContent =
+    'Página cargada. Prueba las flechas y OK del control.';
+});
 </script>
-</body>
-</html>

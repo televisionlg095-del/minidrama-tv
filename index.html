@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MiniDrama TV</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0b12;--panel:#191923;--accent:#ff3764;--muted:#c0bfd0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font:20px Arial,sans-serif}
+header{padding:24px 4vw;background:linear-gradient(110deg,#3a102b,#141827);border-bottom:2px solid #343443}
+.brand{font-size:40px;font-weight:800}.brand span{color:var(--accent)}p{line-height:1.5;color:#ddd}
+main{padding:20px 4vw}h2{font-size:27px}.panel{background:var(--panel);border:1px solid #39394b;border-radius:14px;padding:20px;margin:14px 0}
+button,a.btn{display:inline-block;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:15px 20px;font-size:20px;font-weight:bold;text-decoration:none;cursor:pointer}
+button:focus,a:focus{outline:4px solid #ffcf48;outline-offset:3px}
+.secondary{background:#343445!important}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+.framewrap{height:58vh;min-height:300px;border:2px solid #454557;border-radius:12px;overflow:hidden;background:#111}
+iframe{width:100%;height:100%;border:0;background:#fff}
+.status{font-size:16px;color:var(--muted)}
+@media(max-width:700px){.brand{font-size:32px}body{font-size:18px}.framewrap{height:55vh}}
+</style>
+</head>
+<body>
+<header><div class="brand">MiniDrama<span> TV</span></div><p>Prueba de acceso a DramaBox desde una aplicación webOS</p></header>
+<main>
+<div class="panel">
+<h2>Catálogo de DramaBox</h2>
+<p>Esta versión de prueba intenta mostrar el sitio oficial dentro de la aplicación. Si DramaBox bloquea la inserción en un marco o no es compatible con el motor del televisor, usa el botón para abrirlo en la misma aplicación.</p>
+<div class="actions">
+<button id="open">Abrir DramaBox aquí</button>
+<button id="reload" class="secondary">Volver a intentar</button>
+</div>
+<p id="status" class="status">Cargando el sitio oficial…</p>
+</div>
+<div class="framewrap" id="framewrap">
+<iframe id="site" title="Sitio oficial de DramaBox" src="https://www.dramabox.com/es" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+</div>
+<div class="panel">
+<h2>¿No aparece el catálogo?</h2>
+<p>Algunos sitios impiden mostrarse dentro de otra página. En ese caso, la prueba de navegación directa permite comprobar si el motor webOS puede cargar DramaBox. La reproducción de los episodios dependerá de la compatibilidad y de las protecciones del servicio.</p>
+<div class="actions"><a class="btn" href="https://www.dramabox.com/es" id="fallback">Ir al sitio oficial</a></div>
+<p class="status">Aplicación de prueba independiente. No está afiliada a DramaBox y no extrae ni descarga sus videos.</p>
+</div>
+</main>
+<script>
+const frame=document.getElementById('site'),status=document.getElementById('status');
+document.getElementById('open').onclick=()=>{window.location.href='https://www.dramabox.com/es'};
+document.getElementById('fallback').onclick=(e)=>{e.preventDefault();window.location.href='https://www.dramabox.com/es'};
+document.getElementById('reload').onclick=()=>{status.textContent='Volviendo a cargar…';frame.src='https://www.dramabox.com/es'};
+frame.addEventListener('load',()=>{status.textContent='El marco terminó de cargar. Comprueba visualmente si aparece el catálogo; un evento load no garantiza que el sitio permita mostrarse dentro del marco.'});
+</script>
+</body>
+</html>

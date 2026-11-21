@@ -1,0 +1,11 @@
+{
+  "id": "com.minidramatv.app",
+  "version": "0.2.0",
+  "vendor": "MiniDrama TV",
+  "type": "web",
+  "main": "index.html",
+  "title": "MiniDrama TV",
+  "icon": "icon.png",
+  "largeIcon": "largeicon.png",
+  "appDescription": "Prueba de compatibilidad web de DramaBox en webOS TV"
+}
